@@ -5,6 +5,7 @@ import (
 	"Booking/pkg/models"
 	"bytes"
 	"fmt"
+	"github.com/justinas/nosurf"
 	"html/template"
 	"log"
 	"net/http"
@@ -17,11 +18,12 @@ var appConfig *config.AppConfig
 func NewTemplates(configParam *config.AppConfig) {
 	appConfig = configParam
 }
-func AddDefaultData(templateData *models.TemplateData) *models.TemplateData {
+func AddDefaultData(templateData *models.TemplateData, request *http.Request) *models.TemplateData {
+	templateData.CSRFToken = nosurf.Token(request)
 	return templateData
 }
 
-func RenderTemplate(writer http.ResponseWriter, tmpl string, data *models.TemplateData) {
+func RenderTemplate(writer http.ResponseWriter, request *http.Request, tmpl string, data *models.TemplateData) {
 	var templateCache map[string]*template.Template
 
 	if appConfig.UseCache {
@@ -37,7 +39,7 @@ func RenderTemplate(writer http.ResponseWriter, tmpl string, data *models.Templa
 
 	bufferObject := new(bytes.Buffer)
 
-	data = AddDefaultData(data)
+	data = AddDefaultData(data, request)
 
 	err := templateObject.Execute(bufferObject, data)
 	if err != nil {
