@@ -1,8 +1,8 @@
 package render
 
 import (
-	"Booking/pkg/config"
-	"Booking/pkg/models"
+	"Booking/internal/config"
+	"Booking/internal/models"
 	"bytes"
 	"fmt"
 	"github.com/justinas/nosurf"
