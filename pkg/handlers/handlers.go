@@ -4,7 +4,9 @@ import (
 	"Booking/pkg/config"
 	"Booking/pkg/models"
 	"Booking/pkg/render"
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -62,12 +64,33 @@ func (m *Repository) Availability(writer http.ResponseWriter, request *http.Requ
 	render.RenderTemplate(writer, request, "search-availability.page.tmpl", &models.TemplateData{})
 }
 
-// Availability render room page
+// PostAvailability post form to check room availability
 func (m *Repository) PostAvailability(writer http.ResponseWriter, request *http.Request) {
 	start := request.Form.Get("start")
 	end := request.Form.Get("end")
 
 	writer.Write([]byte(fmt.Sprintf("Start date is %s and end Date is %s", start, end)))
+}
+
+type jsonResponse struct {
+	Ok      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+// AvailabilityJson post form and send json
+func (m *Repository) AvailabilityJson(writer http.ResponseWriter, request *http.Request) {
+	resp := jsonResponse{
+		Ok:      true,
+		Message: "Available",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "     ")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(out)
+	writer.Header().Set("Content-Type", "application/json")
+	writer.Write(out)
 }
 
 // Contact render room page
