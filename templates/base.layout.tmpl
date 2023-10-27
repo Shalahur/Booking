@@ -138,9 +138,9 @@
         })();
 
         const elem = document.getElementById('reservation-dates');
-        const rangePicker = new DateRangePicker(elem, {
-            format: "yyyy-mm-dd",
-        });
+        // const rangePicker = new DateRangePicker(elem, {
+        //     format: "yyyy-mm-dd",
+        // });
 
         function notify(msg, msgType) {
             notie.alert({
@@ -157,6 +157,18 @@
                 confirmButtonText: confirmationButtonText
             })
         }
+
+        {{with .Error}}
+            notify("{{.}}","error")
+        {{end}}
+
+        {{with .Flash}}
+            notify("{{.}}","success")
+        {{end}}
+
+        {{with .Warning}}
+            notify("{{.}}","warning")
+        {{end}}
 
         function Prompt() {
             let toast = function (c) {
