@@ -3,7 +3,9 @@ package main
 import (
 	"Booking/internal/config"
 	"Booking/internal/handlers"
+	"Booking/internal/models"
 	"Booking/internal/render"
+	"encoding/gob"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"log"
@@ -17,6 +19,9 @@ var appConfiguration config.AppConfig
 var session *scs.SessionManager
 
 func main() {
+
+	//What am i going to true when in production
+	gob.Register(models.Reservation{})
 
 	appConfiguration.InProduction = false //this should be true in production
 
