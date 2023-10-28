@@ -35,7 +35,6 @@ func (form *Form) Required(fields ...string) {
 			form.Errors.Add(field, "This field cannot be blank")
 		}
 	}
-
 }
 
 // Has checks if form field is in post and not empty
